@@ -20,6 +20,7 @@ df = df[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume']]
 df['HL_PCT'] = (df['Adj. High'] - df['Adj. Close']) / df['Adj. Close'] * 100.0
 df['PCT_change'] = (df['Adj. Close'] - df['Adj. Open']) / df['Adj. Open'] * 100.0
 
+
 df = df[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
 
 forecast_col = 'Adj. Close'
@@ -31,10 +32,10 @@ df['label'] = df[forecast_col].shift(-forecast_out)
 # print(df.head())
 
 # Features are X, labels are y
-X = np.array(df.drop(['label'], 1))
+X = np.array(df.drop(['label', 'Adj. Close'], 1))
 X = preprocessing.scale(X)
-X = X[:-forecast_out]
 X_lately = X[-forecast_out:]
+X = X[:-forecast_out]
 
 df.dropna(inplace=True)
 y = np.array(df['label'])
